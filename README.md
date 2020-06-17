@@ -1,2 +1,11 @@
 # device_ssh_config
-config any ssh supported devices 
+### configure devices with paramiko
+required paramiko
+-------------------------------------------------------------------------------------------------------------------
+### arguments
+<p> -h, --help           show this help message and exit</p>
+<p>  --net NET            destination network 1.1.1.0/24</p>
+<p>  --user USER          Username</p>
+<p>  --password PASSWORD  Password</p>
+<p>  --cmd CMD            enter command separated by commas: conf t,int gi0/0,ip address 2.2.2.2 255.255.255.255 </p>
+
