@@ -35,17 +35,22 @@ def config(user=None, subnet=None, cmd=None):
             net = [ipaddress.ip_network(subnet).broadcast_address]
 
         for ip in net:
-            client.connect(hostname=str(ip), username=user, password=password, look_for_keys=False, allow_agent=False, timeout=1)
-            remote_conn = client.invoke_shell()
-            output = remote_conn.recv(65535)
-            [print(line) for line in output.decode('utf-8').split("\n")]
-            time.sleep(1)
-            for c in cmd.split(","):
-                remote_conn.send(f'{c}\n')
-                out = remote_conn.recv(65535)
-                time.sleep(1)
-                [print(line) for line in out.decode('utf-8').split("\n")]
+            try:
+                client.connect(hostname=str(ip), username=user, password=password, look_for_keys=False, allow_agent=False, timeout=1)
 
+                remote_conn = client.invoke_shell()
+                print(f"connected to {ip}")
+                output = remote_conn.recv(65535)
+                [print(line) for line in output.decode('utf-8').split("\n")]
+                time.sleep(1)
+                for c in cmd.split(","):
+                    remote_conn.send(f'{c}\n')
+                    out = remote_conn.recv(65535)
+                    time.sleep(1)
+                    [print(line) for line in out.decode('utf-8').split("\n")]
+                print(f"configuration is finished for {ip}")
+            except Exception as error:
+                print(f"connection to {ip} failed -> {error}")
     else:
         print(parser.description)
 
