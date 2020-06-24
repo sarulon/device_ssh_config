@@ -17,10 +17,19 @@ class Application(Ui_MainWindow, QMainWindow):
         self.actionImport.triggered.connect(self.getfile)
         self.start.clicked.connect(self.start_thread)
         self.model = QStandardItemModel(self)
+        self.init_table()
+        self.btn_add_row.clicked.connect(self.add_rows)
+        self.btn_reset_table.clicked.connect(self.init_table)
+
+    def init_table(self):
+        self.model.clear()
         self.model.setHorizontalHeaderLabels(['subnet/ip', 'username', 'command'])
         self.model.setRowCount(18)
         self.table.setModel(self.model)
-        self.model.dataChanged.connect(self.update_table)
+
+    def add_rows(self):
+        rows = self.model.rowCount()
+        self.model.setRowCount(rows + self.num_rows.value())
 
     def getfile(self):
         path, _ = QFileDialog.getOpenFileName(self, 'Open csv', QDir.rootPath(), '*.csv')
@@ -41,18 +50,6 @@ class Application(Ui_MainWindow, QMainWindow):
                 self.model.appendRow(items)
             self.table.horizontalHeader()
 
-    def update_table(self):
-        print("data changed")
-
-        column = self.table.currentIndex().column()
-        row = self.table.currentIndex().row()
-        data = self.model.itemData(self.table.currentIndex()).get(0)
-        try:
-            self.model.item(row, column).setText(data)
-            self.table.setModel(self.model)
-        except Exception as error:
-            print(error)
-
     def execute_commands(self):
         rows = self.model.rowCount()
         for i in range(0, rows):
@@ -66,8 +63,6 @@ class Application(Ui_MainWindow, QMainWindow):
                     cmd = cmd.text()
 
                     self.log.appendPlainText(f"{host}, {user}, {cmd}")
-                # host, user, cmd = self.model.takeRow(i)
-                # print(host.text(), user.text(), cmd.text())
                     execute_with_subnet(subnet=host, user=user, password=self.line_password.text(), cmd=cmd, log=self.log)
             except Exception as error:
                 print(error)
