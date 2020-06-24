@@ -15,10 +15,10 @@ help = """
 
 
 parser = argparse.ArgumentParser(description=help)
-parser.add_argument('--net', type=str, help="destination subnet: 1.1.1.0/24, for single ip use 1.1.1.1/32")
-parser.add_argument('--user', type=str, help="Username")
+parser.add_argument('--net', type=str, help="destination subnet: 1.1.1.0/24, for single ip use 1.1.1.1/32", required=True)
+parser.add_argument('--user', type=str, help="Username", required=True)
 # parser.add_argument('--password', type=str, help="Password")
-parser.add_argument('--cmd', type=str, help='enter command separated by commas: "conf t,int gi0/0,description test"')
+parser.add_argument('--cmd', type=str, help='enter command separated by commas: "conf t,int gi0/0,description test"', required=True)
 args = parser.parse_args()
 
 client = SSHClient()
