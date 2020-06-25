@@ -26,7 +26,7 @@ class Application(Ui_MainWindow, QMainWindow):
     def init_table(self, row_num):
         # self.model.clear()
         self.table.clear()
-        self.table.setHorizontalHeaderLabels(['subnet/ip', 'username', 'command', 'password'])
+        self.table.setHorizontalHeaderLabels(['subnet/ip', 'command', 'username', 'password'])
         self.table.setRowCount(row_num)
         rows = self.table.rowCount()
         for i in range(rows):
