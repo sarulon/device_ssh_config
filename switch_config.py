@@ -8,7 +8,7 @@ import csv
 
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--net', type=str, help=destination subnet support multiple subnets: 1.1.1.0/24 or '1.1.1.0/24,1.1.2.0/24', for single ip use 1.1.1.1 or 1.1.1.1/32",
+parser.add_argument('--net', type=str, help="destination subnet support multiple subnets: 1.1.1.0/24 or '1.1.1.0/24,1.1.2.0/24', for single ip use 1.1.1.1 or 1.1.1.1/32",
                     required='--file' not in sys.argv)
 parser.add_argument('--user', type=str, help="Username", required='--file' not in sys.argv)
 # parser.add_argument('--password', type=str, help="Password")
