@@ -75,8 +75,8 @@ class Application(Ui_MainWindow, QMainWindow):
         for i in range(0, rows):
             try:
                 host = self.table.item(i, 0)
-                user = self.table.item(i, 1)
-                cmd = self.table.item(i, 2)
+                user = self.table.item(i, 2)
+                cmd = self.table.item(i, 1)
                 pwd = self.table.cellWidget(i, 3)
 
                 if host and user and cmd:
