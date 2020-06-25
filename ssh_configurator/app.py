@@ -71,24 +71,30 @@ class Application(Ui_MainWindow, QMainWindow):
 
     def execute_commands(self):
         rows = self.table.rowCount()
+        password = self.line_password.text()
         for i in range(0, rows):
             try:
                 host = self.table.item(i, 0)
                 user = self.table.item(i, 1)
                 cmd = self.table.item(i, 2)
+                pwd = self.table.cellWidget(i, 3)
+
                 if host and user and cmd:
                     host = host.text()
                     user = user.text()
                     cmd = cmd.text()
-
+                    if self.include_password.isChecked() and pwd:
+                        password = pwd.text()
                     self.log.appendPlainText(f"{host}, {user}, {cmd}")
-                    execute_with_subnet(subnet=host, user=user, password=self.line_password.text(), cmd=cmd, log=self.log)
+                    execute_with_subnet(subnet=host, user=user, password=password, cmd=cmd, log=self.log)
             except Exception as error:
-                print(error)
+                self.log.appendPlainText(str(error))
 
     def start_thread(self):
         p = Thread(target=self.execute_commands)
         p.start()
+        p.is_alive()
+        p.join(1)
 
 
 def main():
