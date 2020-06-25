@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'remote_ssh_configurator.ui'
+# Form implementation generated from reading ui file 'remote_ssh_configurator2.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.0
 #
@@ -56,18 +56,6 @@ class Ui_MainWindow(object):
         self.horizontalLayout_2.setStretch(0, 3)
         self.horizontalLayout_2.setStretch(1, 1)
         self.gridLayout.addLayout(self.horizontalLayout_2, 0, 0, 1, 1)
-        self.table = QtWidgets.QTableView(self.centralwidget)
-        self.table.setFrameShadow(QtWidgets.QFrame.Sunken)
-        self.table.setEditTriggers(QtWidgets.QAbstractItemView.AllEditTriggers)
-        self.table.setAlternatingRowColors(True)
-        self.table.setSortingEnabled(True)
-        self.table.setObjectName("table")
-        self.table.horizontalHeader().setCascadingSectionResizes(True)
-        self.table.horizontalHeader().setDefaultSectionSize(300)
-        self.table.horizontalHeader().setStretchLastSection(True)
-        self.table.verticalHeader().setCascadingSectionResizes(True)
-        self.table.verticalHeader().setStretchLastSection(False)
-        self.gridLayout.addWidget(self.table, 1, 0, 1, 1)
         self.horizontalLayout = QtWidgets.QHBoxLayout()
         self.horizontalLayout.setObjectName("horizontalLayout")
         self.num_rows = QtWidgets.QSpinBox(self.centralwidget)
@@ -99,6 +87,19 @@ class Ui_MainWindow(object):
         self.horizontalLayout.setStretch(1, 2)
         self.horizontalLayout.setStretch(2, 3)
         self.gridLayout.addLayout(self.horizontalLayout, 3, 0, 1, 1)
+        self.table = QtWidgets.QTableWidget(self.centralwidget)
+        self.table.setFrameShadow(QtWidgets.QFrame.Sunken)
+        self.table.setEditTriggers(QtWidgets.QAbstractItemView.AllEditTriggers)
+        self.table.setAlternatingRowColors(True)
+        self.table.setRowCount(30)
+        self.table.setColumnCount(4)
+        self.table.setObjectName("table")
+        self.table.horizontalHeader().setVisible(True)
+        self.table.horizontalHeader().setDefaultSectionSize(300)
+        self.table.horizontalHeader().setMinimumSectionSize(1)
+        self.table.horizontalHeader().setStretchLastSection(True)
+        self.table.verticalHeader().setMinimumSectionSize(0)
+        self.gridLayout.addWidget(self.table, 1, 0, 1, 1)
         self.gridLayout.setRowStretch(0, 1)
         self.gridLayout.setRowStretch(1, 15)
         self.gridLayout.setRowStretch(3, 1)
@@ -124,6 +125,7 @@ class Ui_MainWindow(object):
         self.start.setText(_translate("MainWindow", "Start"))
         self.btn_reset_table.setText(_translate("MainWindow", "Reset Table"))
         self.btn_add_row.setText(_translate("MainWindow", "Add Rows"))
+        self.table.setSortingEnabled(True)
         self.menuFile.setTitle(_translate("MainWindow", "File"))
         self.actionImport.setText(_translate("MainWindow", "Import"))
         self.actionImport.setShortcut(_translate("MainWindow", "Ctrl+F"))

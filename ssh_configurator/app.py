@@ -1,4 +1,7 @@
 from __future__ import absolute_import
+
+import time
+
 from ssh_configurator import Ui_MainWindow
 from device_config.device_config import execute_with_subnet
 from PyQt5.QtWidgets import *
@@ -16,20 +19,24 @@ class Application(Ui_MainWindow, QMainWindow):
         self.setupUi(self)
         self.actionImport.triggered.connect(self.getfile)
         self.start.clicked.connect(self.start_thread)
-        self.model = QStandardItemModel(self)
-        self.init_table()
+        self.init_table(18)
         self.btn_add_row.clicked.connect(self.add_rows)
         self.btn_reset_table.clicked.connect(self.init_table)
 
-    def init_table(self):
-        self.model.clear()
-        self.model.setHorizontalHeaderLabels(['subnet/ip', 'username', 'command'])
-        self.model.setRowCount(18)
-        self.table.setModel(self.model)
+    def init_table(self, row_num):
+        # self.model.clear()
+        self.table.clear()
+        self.table.setHorizontalHeaderLabels(['subnet/ip', 'username', 'command', 'password'])
+        self.table.setRowCount(row_num)
+        rows = self.table.rowCount()
+        for i in range(rows):
+            self.add_pwd_widget(i)
 
     def add_rows(self):
-        rows = self.model.rowCount()
-        self.model.setRowCount(rows + self.num_rows.value())
+        rows = self.table.rowCount()
+        self.table.setRowCount(rows + self.num_rows.value())
+        for i in range(rows, rows + self.num_rows.value()):
+            self.add_pwd_widget(i)
 
     def getfile(self):
         path, _ = QFileDialog.getOpenFileName(self, 'Open csv', QDir.rootPath(), '*.csv')
@@ -38,25 +45,37 @@ class Application(Ui_MainWindow, QMainWindow):
         except Exception as error:
             print(error)
 
+    def add_pwd_widget(self, row, data=None):
+        pwd = QLineEdit()
+        pwd.setEchoMode(QLineEdit.Password)
+        self.table.setCellWidget(row, 3, pwd)
+        if data:
+            pwd.setText(data)
+
     def readCsv(self, fileName):
-        self.model.clear()
         with open(fileName) as csv_file:
             csv_reader = csv.reader(csv_file, delimiter=',')
-            print(csv_reader)
-            for row in csv_reader:
+            rows = [row for row in csv_reader]
+            self.init_table(len(rows))
+            self.import_data(rows)
 
-                items = [QStandardItem(field) for field in row]
+    def import_data(self, rows):
 
-                self.model.appendRow(items)
-            self.table.horizontalHeader()
+        for inx, row in enumerate(rows):
+            for i, col in enumerate(row):
+                cellinfo = QTableWidgetItem(col)
+                self.table.setItem(inx, i, cellinfo)
+                self.add_pwd_widget(inx, col)
+
+        self.table.horizontalHeader()
 
     def execute_commands(self):
-        rows = self.model.rowCount()
+        rows = self.table.rowCount()
         for i in range(0, rows):
             try:
-                host = self.model.item(i, 0)
-                user = self.model.item(i, 1)
-                cmd = self.model.item(i, 2)
+                host = self.table.item(i, 0)
+                user = self.table.item(i, 1)
+                cmd = self.table.item(i, 2)
                 if host and user and cmd:
                     host = host.text()
                     user = user.text()
